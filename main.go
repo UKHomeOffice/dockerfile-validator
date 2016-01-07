@@ -89,6 +89,7 @@ func validFrom(rules Rules, dfile *Dockerfile) bool {
 		if entry == dfile.From() {
 			return true
 		}
+
 	}
 	return false
 }

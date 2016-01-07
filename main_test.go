@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -35,4 +36,14 @@ func TestDockerfileRead(t *testing.T) {
 		os.Exit(1)
 	}
 	assert.NotNil(t, dfile, "Read Dockerfile")
+}
+
+func TestFailFrom(t *testing.T) {
+	rules, _ := loadRules("rules.yaml")
+	dfile, err := DockerfileFromPath("Dockerfile.fail_unittest")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	assert.False(t, validFrom(rules, dfile), "FROM entry is valid")
 }
