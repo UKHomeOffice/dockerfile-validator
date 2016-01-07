@@ -47,3 +47,23 @@ func TestFailFrom(t *testing.T) {
 	}
 	assert.False(t, validFrom(rules, dfile), "FROM entry is valid")
 }
+
+func TestIsRootUser(t *testing.T) {
+	rules, _ := loadRules("rules.yaml")
+	dfile, err := DockerfileFromPath("Dockerfile.fail_unittest")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	assert.True(t, isRootUser(rules, dfile), "Runs as root")
+}
+
+func TestIsNOTRootUser(t *testing.T) {
+	rules, _ := loadRules("rules.yaml")
+	dfile, err := DockerfileFromPath("Dockerfile.unittest")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	assert.False(t, isRootUser(rules, dfile), "Runs as not root")
+}

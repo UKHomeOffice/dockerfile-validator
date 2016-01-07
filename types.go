@@ -9,6 +9,6 @@ type Dockerfile struct {
 }
 
 type Rules struct {
-	From     []string
-	RootUser bool
+	From             []string
+	NotAllowRootUser bool
 }

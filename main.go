@@ -94,6 +94,13 @@ func validFrom(rules Rules, dfile *Dockerfile) bool {
 	return false
 }
 
+func isRootUser(rules Rules, dfile *Dockerfile) bool {
+	if dfile.User() == "root" || dfile.User() == "" {
+		return true
+	}
+	return false
+}
+
 func main() {
 	debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
 	dockerfile := os.Getenv("DOCKERFILE")
@@ -107,6 +114,11 @@ func main() {
 	log.Println(from)
 	if !validFrom(rules, dfile) {
 		log.Panic("FROM not valid")
+	}
+	if isRootUser(rules, dfile) {
+		if rules.NotAllowRootUser {
+			log.Panic("Running as root")
+		}
 	}
 
 	os.Exit(0)

@@ -2,4 +2,5 @@
 from:
   - scratch
   - "alpine:latest"
-rootUser: false
+
+notAllowRootUser: false
