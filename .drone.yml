@@ -5,11 +5,13 @@ build:
   environment:
     - GOPATH=/dockerfile-validator
   commands:
+    - go get -u github.com/jstemmer/go-junit-report
     - go get github.com/docker/docker/builder/dockerfile/command
     - go get github.com/docker/docker/builder/dockerfile/parser
     - go get gopkg.in/yaml.v2
     - go get github.com/stretchr/testify/assert
-    - go test
+    - go test -v | go-junit-report > report.xml
+    - cat report.xml
     - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo
 
 publish:
