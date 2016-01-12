@@ -15,7 +15,7 @@ func TestValidUser(t *testing.T) {
 		os.Exit(1)
 	}
 	assert.NotNil(t, dfile.User(), "User exists")
-	assert.Equal(t, "ivan", dfile.User(), "User expected")
+	assert.Equal(t, "app", dfile.User(), "User expected")
 }
 
 func TestNotUser(t *testing.T) {

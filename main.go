@@ -4,6 +4,8 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
+	"net/http"
+
 	"os"
 	"strconv"
 )
@@ -11,18 +13,10 @@ import (
 var debug = false
 
 // load rules file
-func loadRules(ruleFile string) (Rules, error) {
-	rulesdata, err := ioutil.ReadFile(ruleFile)
-
-	if err != nil {
-		log.Panic("failed to read rules file")
-	}
+func loadRules(rulesdata []byte) (Rules, error) {
 	var rules Rules
+	err := yaml.Unmarshal(rulesdata, &rules)
 
-	err = yaml.Unmarshal(rulesdata, &rules)
-	if err != nil {
-		log.Fatalf("error: %v", err)
-	}
 	if debug {
 		log.Printf("--- rules:\n%v\n\n", rules)
 	}
@@ -30,42 +24,48 @@ func loadRules(ruleFile string) (Rules, error) {
 	return rules, err
 }
 
-func validFrom(rules Rules, dfile *Dockerfile) bool {
-	for _, entry := range rules.From {
-		if entry == dfile.From() {
+// load rules file
+func loadRulesFromFile(ruleFile string) (Rules, error) {
+	rulesdata, _ := ioutil.ReadFile(ruleFile)
+	return loadRules(rulesdata)
+}
+
+func (v Validation) validFrom() bool {
+	for _, entry := range v.Rules.From {
+		if entry == v.Dockerfile.From() {
 			return true
 		}
-
 	}
 	return false
 }
 
-func isRootUser(rules Rules, dfile *Dockerfile) bool {
-	if dfile.User() == "root" || dfile.User() == "" {
+func (v Validation) isRootUser() bool {
+	if v.Dockerfile.User() == "root" || v.Dockerfile.User() == "" {
 		return true
 	}
 	return false
 }
 
-func main() {
-	debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
-	dockerfile := os.Getenv("DOCKERFILE")
-	ruleFile := os.Getenv("RULESFILE")
-	rules, _ := loadRules(ruleFile)
-	dfile, err := DockerfileFromPath(dockerfile)
-	if err != nil {
-		log.Panic(err)
-	}
-	from := dfile.From()
+func (v Validation) validate() (bool, string) {
+
+	from := v.Dockerfile.From()
 	log.Println(from)
-	if !validFrom(rules, dfile) {
-		log.Panic("FROM not valid")
-	}
-	if isRootUser(rules, dfile) {
-		if rules.NotAllowRootUser {
-			log.Panic("Running as root")
-		}
+	if !v.validFrom() {
+		return false, "FROM not valid"
 	}
 
-	os.Exit(0)
+	if v.isRootUser() {
+		if v.Rules.NotAllowRootUser {
+			return false, "Running as root"
+		}
+	}
+	return true, ""
+
+}
+
+func main() {
+	debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
+	log.Println("listening in port 8080")
+	http.HandleFunc("/validate", uploadHandler)
+	http.ListenAndServe(":8080", nil)
 }

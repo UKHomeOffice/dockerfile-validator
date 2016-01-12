@@ -1,0 +1,15 @@
+<html>
+<title>Go upload</title>
+ <body>
+
+<form action="http://localhost:8080/validate" method="post" enctype="multipart/form-data">
+<label for="file">Select Dockerfile:</label>
+<input type="file" name="dockerfile" id="dockerfile">
+<label for="file">Select Rules file:</label>
+<input type="file" name="rules" id="rules">
+
+<input type="submit" name="submit" value="Submit">
+</form>
+
+</body>
+</html>

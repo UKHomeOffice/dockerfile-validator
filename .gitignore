@@ -25,3 +25,4 @@ _testmain.go
 
 dockerfile-validator
 test
+report.xml

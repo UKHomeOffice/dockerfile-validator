@@ -9,7 +9,7 @@ import (
 )
 
 func TestLoadRules(t *testing.T) {
-	rulesFile, err := loadRules("rules.yaml")
+	rulesFile, err := loadRulesFromFile("rules.yaml")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -19,13 +19,14 @@ func TestLoadRules(t *testing.T) {
 }
 
 func TestValidFrom(t *testing.T) {
-	rules, _ := loadRules("rules.yaml")
+	rules, _ := loadRulesFromFile("rules.yaml")
 	dfile, err := DockerfileFromPath("Dockerfile")
+	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	assert.True(t, validFrom(rules, dfile), "FROM entry is valid")
+	assert.True(t, v.validFrom(), "FROM entry is valid")
 }
 
 func TestDockerfileRead(t *testing.T) {
@@ -39,31 +40,46 @@ func TestDockerfileRead(t *testing.T) {
 }
 
 func TestFailFrom(t *testing.T) {
-	rules, _ := loadRules("rules.yaml")
+	rules, _ := loadRulesFromFile("rules.yaml")
 	dfile, err := DockerfileFromPath("Dockerfile.fail_unittest")
+	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	assert.False(t, validFrom(rules, dfile), "FROM entry is valid")
+	assert.False(t, v.validFrom(), "FROM entry is valid")
 }
 
 func TestIsRootUser(t *testing.T) {
-	rules, _ := loadRules("rules.yaml")
+	rules, _ := loadRulesFromFile("rules.yaml")
 	dfile, err := DockerfileFromPath("Dockerfile.fail_unittest")
+	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	assert.True(t, isRootUser(rules, dfile), "Runs as root")
+	assert.True(t, v.isRootUser(), "Runs as root")
 }
 
 func TestIsNOTRootUser(t *testing.T) {
-	rules, _ := loadRules("rules.yaml")
+	rules, _ := loadRulesFromFile("rules.yaml")
 	dfile, err := DockerfileFromPath("Dockerfile.unittest")
+	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	assert.False(t, isRootUser(rules, dfile), "Runs as not root")
+	assert.False(t, v.isRootUser(), "Runs as not root")
+}
+
+func TestValidate(t *testing.T) {
+	rules, _ := loadRulesFromFile("rules.yaml")
+	dfile, err := DockerfileFromPath("Dockerfile.unittest")
+	v := Validation{rules, dfile}
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	r, _ := v.validate()
+	assert.True(t, r, "Dockerfile is valid")
 }

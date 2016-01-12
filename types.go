@@ -12,3 +12,8 @@ type Rules struct {
 	From             []string
 	NotAllowRootUser bool
 }
+
+type Validation struct {
+	Rules      Rules
+	Dockerfile *Dockerfile
+}
