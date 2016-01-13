@@ -37,24 +37,23 @@ func validateHandler(w http.ResponseWriter, r *http.Request) {
 
 	//POST takes the uploaded file(s) and saves it to disk.
 	case "POST":
-		if r.Header.Get("dockerfile") != "" {
-			dockerfile, _, _ := r.FormFile("dockerfile")
-			dfile, _ := DockerfileRead(dockerfile)
-			defer dockerfile.Close()
 
-			v := Validation{rules, dfile}
-			valid, msg := v.validate()
-			if valid {
-				w.WriteHeader(http.StatusOK)
-				return
-			} else {
-				w.WriteHeader(http.StatusConflict)
-				fmt.Fprintf(w, msg)
-			}
+		dockerfile, _, _ := r.FormFile("dockerfile")
+		dfile, _ := DockerfileRead(dockerfile)
+		defer dockerfile.Close()
+
+		v := Validation{rules, dfile}
+		valid, msg := v.validate()
+		if valid {
+			w.WriteHeader(http.StatusOK)
+			return
+		} else {
+			w.WriteHeader(http.StatusConflict)
+			fmt.Fprintf(w, msg)
 		}
 
-		w.WriteHeader(http.StatusConflict)
-		fmt.Fprintf(w, "No Dockerfile found in request")
+		// w.WriteHeader(http.StatusConflict)
+		// fmt.Fprintf(w, "No Dockerfile found in request")
 
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
