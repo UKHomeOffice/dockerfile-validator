@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 )
 
 var debug = false
@@ -27,19 +28,21 @@ func (v Validation) isRootUser() bool {
 }
 
 func (v Validation) validate() (bool, string) {
-
-	from := v.Dockerfile.From()
-
+	lines := []string{}
+	valid := true
 	if !v.validFrom() {
-		return false, "FROM not valid"
+		valid = false
+		lines = append(lines, "FROM not valid")
 	}
 
 	if v.isRootUser() {
 		if v.Rules.NotAllowRootUser {
-			return false, "Running as root"
+			valid = false
+			lines = append(lines, "Running as root")
 		}
 	}
-	return true, ""
+
+	return valid, strings.Join(lines, "\n")
 
 }
 

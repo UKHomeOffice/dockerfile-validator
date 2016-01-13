@@ -47,6 +47,9 @@ func validateHandler(w http.ResponseWriter, r *http.Request) {
 			if valid {
 				w.WriteHeader(http.StatusOK)
 				return
+			} else {
+				w.WriteHeader(http.StatusConflict)
+				fmt.Fprintf(w, msg)
 			}
 		}
 
