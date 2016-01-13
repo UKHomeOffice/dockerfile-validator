@@ -1,34 +1,14 @@
 package main
 
 import (
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"log"
 	"net/http"
-
 	"os"
 	"strconv"
 )
 
 var debug = false
-
-// load rules file
-func loadRules(rulesdata []byte) (Rules, error) {
-	var rules Rules
-	err := yaml.Unmarshal(rulesdata, &rules)
-
-	if debug {
-		log.Printf("--- rules:\n%v\n\n", rules)
-	}
-
-	return rules, err
-}
-
-// load rules file
-func loadRulesFromFile(ruleFile string) (Rules, error) {
-	rulesdata, _ := ioutil.ReadFile(ruleFile)
-	return loadRules(rulesdata)
-}
+var rules Rules
 
 func (v Validation) validFrom() bool {
 	for _, entry := range v.Rules.From {
@@ -49,7 +29,7 @@ func (v Validation) isRootUser() bool {
 func (v Validation) validate() (bool, string) {
 
 	from := v.Dockerfile.From()
-	log.Println(from)
+
 	if !v.validFrom() {
 		return false, "FROM not valid"
 	}
@@ -64,8 +44,12 @@ func (v Validation) validate() (bool, string) {
 }
 
 func main() {
+
 	debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
+	rules, _ = loadRulesFromFile("rules.yaml")
 	log.Println("listening in port 8080")
-	http.HandleFunc("/validate", uploadHandler)
+	http.HandleFunc("/validate", validateHandler)
+	http.HandleFunc("/setup", uploadHandler)
+	http.HandleFunc("/rules", uploadRulesHandler)
 	http.ListenAndServe(":8080", nil)
 }
