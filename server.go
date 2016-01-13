@@ -102,3 +102,8 @@ var templates = template.Must(template.ParseFiles("upload.html"))
 func display(w http.ResponseWriter, tmpl string, data interface{}) {
 	templates.ExecuteTemplate(w, tmpl+".html", data)
 }
+
+func defaultHandler(w http.ResponseWriter, r *http.Request) {
+	message := "Dockerfile Validator. Upload your Dockerfile to test if it's complaiant with the rules"
+	w.Write([]byte(message))
+}

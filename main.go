@@ -54,5 +54,6 @@ func main() {
 	http.HandleFunc("/validate", validateHandler)
 	http.HandleFunc("/setup", uploadHandler)
 	http.HandleFunc("/rules", uploadRulesHandler)
+	http.HandleFunc("/", defaultHandler)
 	http.ListenAndServe(":8080", nil)
 }
