@@ -11,9 +11,8 @@ build:
     - go get gopkg.in/yaml.v2
     - go get github.com/stretchr/testify/assert
     - go test -v | go-junit-report > report.xml
-    - cat report.xml
-    - ls -latrh
-    - ./validate-dockerfile.sh
+    - cat report.xml # TODO: replace by pushing data to deep
+    # - ./validate-dockerfile.sh
     - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo
 
 publish:
