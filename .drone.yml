@@ -23,7 +23,7 @@ publish:
     username: $$QUAY_USER
     password: $$QUAY_PASSWORD
     email: $$QUAY_EMAIL
-    repo: quay.io/ukhomeofficedigital/dockerfilevalidator
+    repo: quay.io/ukhomeofficedigital/dockerfile-validator
     storage_driver: vfs
     tag:
       - latest
