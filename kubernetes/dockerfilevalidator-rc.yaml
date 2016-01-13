@@ -2,23 +2,23 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
-    name: dockerfile-validator
+    name: dockerfilevalidator
     env: ci
-  name: dockerfile-validator
+  name: dockerfilevalidator
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: dockerfile-validator
+        name: dockerfilevalidator
         image.base: scratch
         lang: go
     spec:
       containers:
-      - image: quay.io/ukhomeofficedigital/dockerfile-validator:latest
-        name: dockerfile-validator
+      - image: quay.io/ukhomeofficedigital/dockerfilevalidator:latest
+        name: dockerfilevalidator
         ports:
-        - name: dockerfile-validator
+        - name: dockerfile
           containerPort: 8080
 
 

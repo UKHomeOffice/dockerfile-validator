@@ -12,6 +12,7 @@ build:
     - go get github.com/stretchr/testify/assert
     - go test -v | go-junit-report > report.xml
     - cat report.xml
+    - validate-dockerfile.sh
     - CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo
 
 publish:
@@ -22,7 +23,7 @@ publish:
     username: $$QUAY_USER
     password: $$QUAY_PASSWORD
     email: $$QUAY_EMAIL
-    repo: quay.io/ukhomeofficedigital/dockerfile-validator
+    repo: quay.io/ukhomeofficedigital/dockerfilevalidator
     storage_driver: vfs
     tag:
       - latest
