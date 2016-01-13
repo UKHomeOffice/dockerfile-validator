@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-R=$(curl --write-out %{http_code} --silent --output /dev/null -F dockerfile=@Dockerfile.fail_unittest localhost:8080/validate  )
+R=$(curl --write-out %{http_code} --silent --output /dev/null -F dockerfile=@Dockerfile http://dockerfile-validator.ipedrazas.k8s.co.uk/validate  )
 
 echo $R
 
