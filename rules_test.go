@@ -24,3 +24,8 @@ func TestLoadRules(t *testing.T) {
 	}
 	assert.NotNil(t, rulesFile, "Read and validate rules file")
 }
+
+func TestUnmarshal(t *testing.T) {
+	rules, _ := loadRulesFromFile("rules.yaml")
+	assert.True(t, rules.RootUser, "Unmashalling boolean value with mapping")
+}

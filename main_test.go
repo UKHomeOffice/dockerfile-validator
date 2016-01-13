@@ -59,7 +59,7 @@ func TestIsNOTRootUser(t *testing.T) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	assert.False(t, v.isRootUser(), "Runs as not root")
+	assert.False(t, v.isRootUser(), "Runs as non root")
 }
 
 func TestValidate(t *testing.T) {
@@ -72,4 +72,26 @@ func TestValidate(t *testing.T) {
 	}
 	r, _ := v.validate()
 	assert.True(t, r, "Dockerfile is valid")
+}
+
+func TestRootUserAllowed(t *testing.T) {
+	rules, _ := loadRulesFromFile("rules.yaml")
+	dfile, _ := DockerfileFromPath("Dockerfile")
+	v := Validation{rules, dfile}
+	assert.True(t, v.isRootUserAllowed(), "Root user is allowed")
+
+}
+
+func TestUserAllowed(t *testing.T) {
+	rules, _ := loadRulesFromFile("rules.yaml")
+	dfile, _ := DockerfileFromPath("Dockerfile.unittest")
+	v := Validation{rules, dfile}
+	assert.True(t, v.isRootUserAllowed(), "Root user is allowed")
+}
+
+func TestRootUserNotAllowed(t *testing.T) {
+	dfile, _ := DockerfileFromPath("Dockerfile.fail_unittest")
+	rules, _ := loadRulesFromFile("rules.unittest.yaml")
+	v := Validation{rules, dfile}
+	assert.False(t, v.isRootUserAllowed(), "Root user is not allowed")
 }

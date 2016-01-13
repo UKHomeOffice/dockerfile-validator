@@ -27,6 +27,21 @@ func (v Validation) isRootUser() bool {
 	return false
 }
 
+func (v Validation) isRootUserAllowed() bool {
+	// Rules.RootUser = true allow root
+	if v.Rules.RootUser {
+		return true
+	} else {
+		// root user not allowed
+		if !v.isRootUser() {
+			return true
+		}
+	}
+
+	return false
+
+}
+
 func (v Validation) validate() (bool, string) {
 	lines := []string{}
 	valid := true
@@ -36,7 +51,7 @@ func (v Validation) validate() (bool, string) {
 	}
 
 	if v.isRootUser() {
-		if v.Rules.NotAllowRootUser {
+		if !v.Rules.RootUser {
 			valid = false
 			lines = append(lines, "Running as root")
 		}

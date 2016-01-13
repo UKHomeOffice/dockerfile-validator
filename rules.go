@@ -38,7 +38,7 @@ func (d *Rules) String() string {
 	for _, child := range d.From {
 		lines = append(lines, "FROM "+child)
 	}
-	user := fmt.Sprintf("Root user allowed: %v", d.NotAllowRootUser)
+	user := fmt.Sprintf("Allow root user: %v", d.RootUser)
 	lines = append(lines, user)
 	return strings.Join(lines, "\n")
 }

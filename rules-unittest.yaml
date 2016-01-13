@@ -3,5 +3,4 @@ from:
   - scratch
   - "alpine:latest"
 
-RootUser: true
-
+RootUser: false
