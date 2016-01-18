@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 R=$(curl --write-out %{http_code} --silent --output /dev/null -F dockerfile=@$DOCKERFILE $VALIDATOR_HOST/validate  )
 
 echo $R
