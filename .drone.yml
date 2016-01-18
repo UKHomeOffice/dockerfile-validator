@@ -10,6 +10,7 @@ build:
     - go get github.com/docker/docker/builder/dockerfile/parser
     - go get gopkg.in/yaml.v2
     - go get github.com/stretchr/testify/assert
+    - go get gopkg.in/alecthomas/kingpin.v2
     - go test -v | go-junit-report > report.xml
     - cat report.xml # TODO: replace by pushing data to deep
     - ./validate-dockerfile.sh
