@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"net/http"
 )
@@ -12,7 +11,7 @@ func uploadRulesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	//GET displays the upload form.
 	case "GET":
-		message := "Rules currently defined: \n" + rules.String()
+		message := "Rules currently defined: \n\n" + rules.String()
 		w.Write([]byte(message))
 
 	//POST takes the uploaded file(s) and saves it to disk.
@@ -33,7 +32,8 @@ func validateHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	//GET displays the upload form.
 	case "GET":
-		display(w, "upload", nil)
+		message := "Post your Dockerfile to validate it against the rules: \n\n" + rules.String()
+		w.Write([]byte(message))
 
 	//POST takes the uploaded file(s) and saves it to disk.
 	case "POST":
@@ -64,7 +64,8 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	//GET displays the upload form.
 	case "GET":
-		display(w, "upload", nil)
+		message := "Post your Dockerfile and Rules to check if it's valid"
+		w.Write([]byte(message))
 
 	//POST takes the uploaded file(s) and saves it to disk.
 	case "POST":
@@ -93,14 +94,6 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
 
-}
-
-//Compile templates on start
-var templates = template.Must(template.ParseFiles("upload.html"))
-
-//Display the named template
-func display(w http.ResponseWriter, tmpl string, data interface{}) {
-	templates.ExecuteTemplate(w, tmpl+".html", data)
 }
 
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
