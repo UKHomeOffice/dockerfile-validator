@@ -9,8 +9,8 @@ type Dockerfile struct {
 }
 
 type Rules struct {
-	From     []string
-	RootUser bool `yaml:"RootUser"`
+	From          []string
+	AllowRootUser bool `yaml:"RootUser"`
 }
 
 type Validation struct {

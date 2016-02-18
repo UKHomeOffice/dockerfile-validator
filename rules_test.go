@@ -27,5 +27,5 @@ func TestLoadRules(t *testing.T) {
 
 func TestUnmarshal(t *testing.T) {
 	rules, _ := loadRulesFromFile("testfiles/rules.yaml")
-	assert.True(t, rules.RootUser, "Unmashalling boolean value with mapping")
+	assert.True(t, rules.AllowRootUser, "Unmashalling boolean value with mapping")
 }
