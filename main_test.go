@@ -10,7 +10,7 @@ import (
 
 func TestValidFromQuay(t *testing.T) {
 	rules, _ := loadRulesFromFile("rules.yaml")
-	dfile, err := DockerfileFromPath("Dockerfile.quay_unittest")
+	dfile, err := DockerfileFromPath("testfiles/Dockerfile.quay_unittest")
 	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
@@ -21,7 +21,7 @@ func TestValidFromQuay(t *testing.T) {
 
 func TestValidFrom(t *testing.T) {
 	rules, _ := loadRulesFromFile("rules.yaml")
-	dfile, err := DockerfileFromPath("Dockerfile")
+	dfile, err := DockerfileFromPath("testfiles/Dockerfile")
 	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
@@ -42,7 +42,7 @@ func TestDockerfileRead(t *testing.T) {
 
 func TestFailFrom(t *testing.T) {
 	rules, _ := loadRulesFromFile("rules.yaml")
-	dfile, err := DockerfileFromPath("Dockerfile.fail_unittest")
+	dfile, err := DockerfileFromPath("testfiles/Dockerfile.fail_unittest")
 	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
@@ -52,8 +52,8 @@ func TestFailFrom(t *testing.T) {
 }
 
 func TestIsRootUser(t *testing.T) {
-	rules, _ := loadRulesFromFile("rules.yaml")
-	dfile, err := DockerfileFromPath("Dockerfile.fail_unittest")
+	rules, _ := loadRulesFromFile("testfiles/rules.yaml")
+	dfile, err := DockerfileFromPath("testfiles/Dockerfile.fail_unittest")
 	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
@@ -63,8 +63,8 @@ func TestIsRootUser(t *testing.T) {
 }
 
 func TestIsNOTRootUser(t *testing.T) {
-	rules, _ := loadRulesFromFile("rules.yaml")
-	dfile, err := DockerfileFromPath("Dockerfile.unittest")
+	rules, _ := loadRulesFromFile("testfiles/rules.yaml")
+	dfile, err := DockerfileFromPath("testfiles/Dockerfile.unittest")
 	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
@@ -74,8 +74,8 @@ func TestIsNOTRootUser(t *testing.T) {
 }
 
 func TestValidate(t *testing.T) {
-	rules, _ := loadRulesFromFile("rules.yaml")
-	dfile, err := DockerfileFromPath("Dockerfile.unittest")
+	rules, _ := loadRulesFromFile("testfiles/rules.yaml")
+	dfile, err := DockerfileFromPath("testfiles/Dockerfile.unittest")
 	v := Validation{rules, dfile}
 	if err != nil {
 		fmt.Println(err)
@@ -86,23 +86,23 @@ func TestValidate(t *testing.T) {
 }
 
 func TestRootUserAllowed(t *testing.T) {
-	rules, _ := loadRulesFromFile("rules.yaml")
-	dfile, _ := DockerfileFromPath("Dockerfile")
+	rules, _ := loadRulesFromFile("testfiles/rules.yaml")
+	dfile, _ := DockerfileFromPath("testfiles/Dockerfile")
 	v := Validation{rules, dfile}
 	assert.True(t, v.isRootUserAllowed(), "Root user is allowed")
 
 }
 
 func TestUserAllowed(t *testing.T) {
-	rules, _ := loadRulesFromFile("rules.yaml")
-	dfile, _ := DockerfileFromPath("Dockerfile.unittest")
+	rules, _ := loadRulesFromFile("testfiles/rules.yaml")
+	dfile, _ := DockerfileFromPath("testfiles/Dockerfile.unittest")
 	v := Validation{rules, dfile}
 	assert.True(t, v.isRootUserAllowed(), "Root user is allowed")
 }
 
 func TestRootUserNotAllowed(t *testing.T) {
-	dfile, _ := DockerfileFromPath("Dockerfile.fail_unittest")
-	rules, _ := loadRulesFromFile("rules.unittest.yaml")
+	dfile, _ := DockerfileFromPath("testfiles/Dockerfile.fail_unittest")
+	rules, _ := loadRulesFromFile("testfiles/rules.unittest.yaml")
 	v := Validation{rules, dfile}
 	assert.False(t, v.isRootUserAllowed(), "Root user is not allowed")
 }

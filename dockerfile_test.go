@@ -9,7 +9,7 @@ import (
 )
 
 func TestValidUser(t *testing.T) {
-	dfile, err := DockerfileFromPath("Dockerfile.unittest")
+	dfile, err := DockerfileFromPath("testfiles/Dockerfile.unittest")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -19,7 +19,7 @@ func TestValidUser(t *testing.T) {
 }
 
 func TestNotUser(t *testing.T) {
-	dfile, err := DockerfileFromPath("Dockerfile.fail_unittest")
+	dfile, err := DockerfileFromPath("testfiles/Dockerfile.fail_unittest")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

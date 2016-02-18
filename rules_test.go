@@ -8,7 +8,7 @@ import (
 )
 
 func TestString(t *testing.T) {
-	rulesFile, err := loadRulesFromFile("rules.yaml")
+	rulesFile, err := loadRulesFromFile("testfiles/rules.yaml")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -17,7 +17,7 @@ func TestString(t *testing.T) {
 }
 
 func TestLoadRules(t *testing.T) {
-	rulesFile, err := loadRulesFromFile("rules.yaml")
+	rulesFile, err := loadRulesFromFile("testfiles/rules.yaml")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -26,6 +26,6 @@ func TestLoadRules(t *testing.T) {
 }
 
 func TestUnmarshal(t *testing.T) {
-	rules, _ := loadRulesFromFile("rules.yaml")
+	rules, _ := loadRulesFromFile("testfiles/rules.yaml")
 	assert.True(t, rules.RootUser, "Unmashalling boolean value with mapping")
 }

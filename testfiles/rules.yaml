@@ -1,0 +1,8 @@
+---
+from:
+  - scratch
+  - "alpine:latest"
+  - "quay.io/ukhomeofficedigital/*"
+
+RootUser: true
+
