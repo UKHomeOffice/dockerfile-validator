@@ -2,6 +2,7 @@
 from:
   - scratch
   - "quay.io/ukhomeofficedigital/*"
+  - "docker.digital.homeoffice.gov.uk/*"
 
-AllowRootUser: true
+AllowRootUser: false
 
