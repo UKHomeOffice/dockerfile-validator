@@ -1,0 +1,6 @@
+FROM quay.io/ukhomeofficedigital/test
+MAINTAINER Ivan Pedrazas <ipedrazas@gmail.com>
+
+ADD dockerfile-validator /
+USER app
+CMD ["/dockerfile-validator"]

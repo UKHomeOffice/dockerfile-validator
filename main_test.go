@@ -8,6 +8,17 @@ import (
 	"testing"
 )
 
+func TestValidFromQuay(t *testing.T) {
+	rules, _ := loadRulesFromFile("rules.yaml")
+	dfile, err := DockerfileFromPath("Dockerfile.quay_unittest")
+	v := Validation{rules, dfile}
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	assert.True(t, v.validFrom(), "FROM entry is valid")
+}
+
 func TestValidFrom(t *testing.T) {
 	rules, _ := loadRulesFromFile("rules.yaml")
 	dfile, err := DockerfileFromPath("Dockerfile")

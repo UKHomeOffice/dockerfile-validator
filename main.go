@@ -15,6 +15,15 @@ var rules Rules
 
 func (v Validation) validFrom() bool {
 	for _, entry := range v.Rules.From {
+		// If there's a wildcard, check the substring, otherwise, check the image
+		if strings.Contains(entry, "/*") {
+			seed := entry[:len(entry)-2]
+			if strings.Contains(v.Dockerfile.From(), seed) {
+				return true
+			} else {
+				return false
+			}
+		}
 		if entry == v.Dockerfile.From() {
 			return true
 		}
